@@ -20,7 +20,11 @@ $path = $save_path . '/' . $_GET['note'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $text = isset($_POST['text']) ? $_POST['text'] : file_get_contents("php://input");
     // Update file.
-    file_put_contents($path, $text);
+    $result = file_put_contents($path, $text);
+    if ($result === false) {
+        error_log("Failed to write to file: $path");
+        // 你可以在这里添加更多的错误处理逻辑
+    }
 
     // If provided input is empty, delete file.
     if (!strlen($text)) {
